@@ -166,16 +166,22 @@
 
 
 	<field>
-            <xsl:attribute name="name">Display_Name_with_Affliation</xsl:attribute>
-            <xsl:call-template name="mods_produce_name"/>
-            <xsl:variable name="tempaffl">
-            <xsl:value-of select="normalize-space(mods:affiliation/text())"/>
-                
+            <xsl:variable name="roleType">
+                <xsl:value-of select="mods:role/mods:roleTerm[@type='text']"/>
             </xsl:variable>
-            <xsl:if test="starts-with($tempaffl, 'University Corporation For Atmospheric Research (UCAR)')">
-            	<xsl:text>-</xsl:text>
-                <xsl:text>NCAR/UCAR</xsl:text>
-            </xsl:if>
+            <xsl:attribute name="name"><xsl:value-of
+                select="concat(translate($roleType, $uppercase, $lowercase), '_Display_with_Affiliation')"/>
+            </xsl:attribute>
+            <xsl:call-template name="mods_produce_name"/>
+            <xsl:for-each select="mods:affiliation [text()[contains(.,'University Corporation For Atmospheric Research (UCAR)')]][1] ">
+                <xsl:variable name="tempaffl">
+                    <xsl:value-of select="normalize-space(.)"/>
+                </xsl:variable>
+                <xsl:if
+                    test="starts-with($tempaffl, 'University Corporation For Atmospheric Research (UCAR)')">
+                         <xsl:text>-NCAR/UCAR</xsl:text>
+                </xsl:if>
+            </xsl:for-each>
         </field>
 
         <field>
