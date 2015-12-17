@@ -148,6 +148,16 @@
         <xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz_'"/>
         <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ '"/>
 
+	<xsl:if
+            test="((mods:role/mods:roleTerm[@type='text']!='interviewer') and (mods:role/mods:roleTerm[@type='text']!='speaker') 
+                            and (mods:role/mods:roleTerm[@type='text']!='sponser'))">
+            
+            <field>
+                <xsl:attribute name="name">Creator_Lastname</xsl:attribute>
+                <xsl:value-of select="mods:namePart[@type='family']"/>
+            </field>
+        </xsl:if>
+
         <field>
             <xsl:attribute name="name">Display_Name</xsl:attribute>
             <xsl:call-template name="mods_produce_name"/>
@@ -267,10 +277,8 @@
         
     </xsl:template>
 
-
-
 <!-- Intercept Collection Key to add an english readible name for faceting.-->
-    
+
     <xsl:template match="mods:extension/osm:collectionKey" mode="slurping_MODS">
         <xsl:param name="prefix"/>
         <xsl:param name="suffix"/>
@@ -278,33 +286,37 @@
         <xsl:param name="pid"/>
         <field>
             <xsl:attribute name="name">
-                <xsl:value-of select="'mods_extension_collectionKey_ms'"/>                
+                <xsl:value-of select="'mods_extension_collectionKey_ms'"/>
             </xsl:attribute>
             <xsl:value-of select="."/>
         </field>
-        
+
         <field>
             <xsl:attribute name="name">
-                <xsl:value-of select="'collectionName_ms'"/>                
+                <xsl:value-of select="'collectionName_ms'"/>
             </xsl:attribute>
-            
+
             <xsl:variable name="CN" select="."/>
-            
+
                 <xsl:for-each select="$CNTable"><!-- change context document -->
                     <xsl:for-each select="key('CN-lookup', $CN)">
                         <xsl:value-of select="collectionName"/>
-                        
+
                     </xsl:for-each>
                 </xsl:for-each>
-            
-            
-            
-            
-            
+
         </field>
+
         
-        
-        
+	<xsl:if test="((. = 'articles') or (. = 'technotes'))">
+            <field>
+                <xsl:attribute name="name">
+                    <xsl:value-of select="'collectionLarge_ms'"/>
+                </xsl:attribute>
+                <xsl:value-of select="'Research'"/>
+            </field>
+        </xsl:if>
+ 
         
         <xsl:apply-templates mode="slurping_MODS">
             <xsl:with-param name="prefix" select="$prefix"/>
