@@ -147,6 +147,19 @@
         <xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz_'"/>
         <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ '"/>
 
+
+        <xsl:if
+            test="((mods:role/mods:roleTerm[@type='text']!='interviewer') and (mods:role/mods:roleTerm[@type='text']!='speaker') 
+                            and (mods:role/mods:roleTerm[@type='text']!='sponser'))">
+            
+            <field>
+                <xsl:attribute name="name">Creator_Lastname</xsl:attribute>
+                <xsl:value-of select="mods:namePart[@type='family']"/>
+            </field>
+        </xsl:if>
+
+
+
         <field>
             <xsl:attribute name="name">Display_Name</xsl:attribute>
             <xsl:call-template name="mods_produce_name"/>
@@ -229,6 +242,7 @@
         </xsl:call-template>
 
 
+
     </xsl:template>
 
 
@@ -297,13 +311,17 @@
 
                     </xsl:for-each>
                 </xsl:for-each>
-
-
-
-
-
         </field>
 
+	<xsl:if test="((. = 'articles') or (. = 'technotes'))">
+            <field>
+                <xsl:attribute name="name">
+                    <xsl:value-of select="'collectionLarge_ms'"/>
+                </xsl:attribute>
+                <xsl:value-of select="'Research'"/>
+            </field>
+        </xsl:if>
+  
 
 
 
