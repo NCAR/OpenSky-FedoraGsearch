@@ -151,4 +151,8 @@
         <collectionKey>books</collectionKey>
         <collectionName>Book &amp; Bk Chapters</collectionName>
    </row>
+    <row>
+        <collectionKey>usclivar</collectionKey>
+        <collectionName>US CLIVAR Reports</collectionName>
+   </row>
 </lookup>
