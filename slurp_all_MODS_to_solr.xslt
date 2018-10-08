@@ -136,6 +136,49 @@
 
 
 
+    <!-- Intercepting Corporate Names so we can create display names and sortable 
+               fields for primary authors -->
+
+    <xsl:template match="mods:name[@type = 'corporate']" mode="slurping_MODS">
+        <xsl:param name="prefix"/>
+        <xsl:param name="suffix"/>
+        <xsl:param name="node" select="current()"/>
+        <xsl:param name="pid">not provided</xsl:param>
+        <xsl:param name="datastream">not provided</xsl:param>
+        <xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz_'"/>
+        <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ '"/>
+        <xsl:variable name="this_prefix">
+            <xsl:value-of select="concat($prefix, local-name(), '_')"/>
+            <xsl:if test="@type">
+                <xsl:value-of select="concat(translate(@type, ' ', '_'), '_')"/>
+            </xsl:if>
+        </xsl:variable>
+        <xsl:if test="((@usage = 'primary') or (@usage = 'Primary'))">
+            <field>
+                <xsl:variable name="roleType">
+                    <xsl:value-of select="mods:role/mods:roleTerm[@type = 'text']"/>
+                </xsl:variable>
+                <xsl:attribute name="name">
+                    <xsl:value-of
+                        select="concat($this_prefix, translate(@usage, $uppercase, $lowercase), '_', translate($roleType, $uppercase, $lowercase), '_sort')"
+                    />
+                </xsl:attribute>
+                <xsl:value-of select="mods:namePart"/>
+            </field>
+        </xsl:if>
+        <xsl:call-template name="mods_role_term">
+            <xsl:with-param name="prefix" select="$prefix"/>
+            <xsl:with-param name="suffix" select="$suffix"/>
+            <xsl:with-param name="value" select="normalize-space(text())"/>
+            <xsl:with-param name="pid" select="$pid"/>
+            <xsl:with-param name="datastream" select="$datastream"/>
+            <xsl:with-param name="node" select="../.."/>
+        </xsl:call-template>
+        
+    </xsl:template>
+
+
+
  <!-- Intercepting Personal Names so we can create display names and display names
         with affiliations -->
     <xsl:template match="mods:name[@type='personal']" mode="slurping_MODS">
@@ -212,6 +255,15 @@
             </field>
         </xsl:if>
 
+
+        <xsl:variable name="this_prefix">
+            <xsl:value-of select="concat($prefix, local-name(), '_')"/>
+            <xsl:if test="@type">
+                <xsl:value-of select="concat(translate(@type, ' ', '_'), '_')"/>
+            </xsl:if>
+        </xsl:variable>
+
+
         <xsl:if test="((@usage='primary') or (@usage='Primary'))">
             <field>
 
@@ -226,7 +278,36 @@
                 <xsl:call-template name="mods_produce_name"/>
 
             </field>
-        </xsl:if>
+
+
+		<field>
+                    
+                    <xsl:variable name="roleType">
+                        <xsl:value-of select="mods:role/mods:roleTerm[@type='text']"/>
+                    </xsl:variable>
+                    <xsl:attribute name="name">
+                        <xsl:value-of
+                            select="concat($this_prefix, translate(@usage, $uppercase, $lowercase), '_', translate($roleType, $uppercase, $lowercase), '_sort')"
+                        />
+                    </xsl:attribute>
+                    
+                   
+                    
+                    <xsl:value-of select="mods:namePart[@type='family']"/>
+                    <xsl:if test="mods:namePart[@type='given']">
+                        <xsl:text>, </xsl:text>    
+                    </xsl:if>
+                    
+                    <xsl:for-each select="mods:namePart[@type='given']">
+                        
+                        <xsl:value-of select="."/>
+                        <xsl:text> </xsl:text>
+                    </xsl:for-each>
+                    
+                </field>
+
+
+            </xsl:if>
 
 
 
@@ -284,6 +365,81 @@
 
 
 
+    <xsl:template match="mods:identifier[@type='ark']" mode="slurping_MODS">
+        <xsl:param name="prefix"/>
+        <xsl:param name="suffix"/>
+        <xsl:param name="pid">"pid"</xsl:param>
+        <xsl:param name="datastream">'datastream'</xsl:param>
+        <xsl:param name="node" select="current()"/>
+        <xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz_'"/>
+        <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ '"/>
+        
+        <xsl:variable name="identifierType">
+            <xsl:value-of select="@type"/>
+        </xsl:variable>
+        <xsl:variable name="thisprefix">
+            <xsl:value-of select="concat($prefix, local-name(), '_', translate($identifierType, $uppercase, $lowercase), '_')"/>
+        </xsl:variable>
+        
+        <field>
+            <xsl:attribute name="name">mods_ark_uri</xsl:attribute>
+            <xsl:value-of select=" concat('http://n2t.net/', .)"/>
+        </field>
+        
+        <xsl:variable name="value">
+            <xsl:value-of select="."/>
+        </xsl:variable>
+        
+        <xsl:call-template name="general_mods_field">
+            <xsl:with-param name="prefix" select="$thisprefix"/>
+            <xsl:with-param name="suffix" select="$suffix"/>
+            <xsl:with-param name="value" select="$value"/>
+            <xsl:with-param name="pid" select="$pid"/>
+            <xsl:with-param name="datastream" select="$datastream"/>
+            <xsl:with-param name="node" select="$node"/>
+        </xsl:call-template>
+        
+    </xsl:template>
+
+
+    <xsl:template match="mods:identifier[@type='doi']" mode="slurping_MODS">
+        <xsl:param name="prefix"/>
+        <xsl:param name="suffix"/>
+        <xsl:param name="pid">"pid"</xsl:param>
+        <xsl:param name="datastream">'datastream'</xsl:param>
+        <xsl:param name="node" select="current()"/>
+        <xsl:variable name="lowercase" select="'abcdefghijklmnopqrstuvwxyz_'"/>
+        <xsl:variable name="uppercase" select="'ABCDEFGHIJKLMNOPQRSTUVWXYZ '"/>
+        
+        <xsl:variable name="identifierType">
+            <xsl:value-of select="@type"/>
+        </xsl:variable>
+        <xsl:variable name="thisprefix">
+            <xsl:value-of select="concat($prefix, local-name(), '_', translate($identifierType, $uppercase, $lowercase), '_')"/>
+        </xsl:variable>
+        
+        <field>
+            <xsl:attribute name="name">mods_doi_uri</xsl:attribute>
+            <xsl:value-of select=" concat('http://dx.doi.org/', .)"/>
+        </field>
+        
+        <xsl:variable name="value">
+            <xsl:value-of select="."/>
+        </xsl:variable>
+        
+        <xsl:call-template name="general_mods_field">
+            <xsl:with-param name="prefix" select="$thisprefix"/>
+            <xsl:with-param name="suffix" select="$suffix"/>
+            <xsl:with-param name="value" select="$value"/>
+            <xsl:with-param name="pid" select="$pid"/>
+            <xsl:with-param name="datastream" select="$datastream"/>
+            <xsl:with-param name="node" select="$node"/>
+        </xsl:call-template>
+        
+    </xsl:template>
+
+
+
 <!-- Intercept Collection Key to add an english readible name for faceting.-->
 
     <xsl:template match="mods:extension/osm:collectionKey" mode="slurping_MODS">
@@ -313,7 +469,7 @@
                 </xsl:for-each>
         </field>
 
-	<xsl:if test="((. = 'articles') or (. = 'technotes'))">
+	<xsl:if test="((. = 'articles') or (. = 'technotes') or (. = 'books') or (. = 'conference') or (. = 'reports'))">
             <field>
                 <xsl:attribute name="name">
                     <xsl:value-of select="'collectionLarge_ms'"/>
