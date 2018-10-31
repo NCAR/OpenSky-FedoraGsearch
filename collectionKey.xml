@@ -187,5 +187,13 @@
         <collectionKey>manuscript</collectionKey>
         <collectionName>NCAR Manuscripts</collectionName>
    </row>
+    <row>
+        <collectionKey>barbados</collectionKey>
+        <collectionName>1968 Barbados Experiment</collectionName>
+   </row>
+    <row>
+        <collectionKey>ral</collectionKey>
+        <collectionName>Research Applications Lab</collectionName>
+   </row>
 
 </lookup>
