@@ -199,5 +199,9 @@
         <collectionKey>reference</collectionKey>
         <collectionName>Reference Documents</collectionName>
    </row>
+    <row>
+        <collectionKey>gcip</collectionKey>
+        <collectionName>Global Change Instructrion Program</collectionName>
+   </row>
 
 </lookup>
