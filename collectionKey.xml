@@ -195,5 +195,9 @@
         <collectionKey>ral</collectionKey>
         <collectionName>Research Applications Lab</collectionName>
    </row>
+    <row>
+        <collectionKey>reference</collectionKey>
+        <collectionName>Reference Documents</collectionName>
+   </row>
 
 </lookup>
