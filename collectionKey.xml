@@ -151,4 +151,49 @@
         <collectionKey>books</collectionKey>
         <collectionName>Book &amp; Bk Chapters</collectionName>
    </row>
+    <row>
+        <collectionKey>usclivar</collectionKey>
+        <collectionName>US CLIVAR Reports</collectionName>
+   </row>
+    <row>
+        <collectionKey>gtpr</collectionKey>
+        <collectionName>Geophysical Turbulence Records</collectionName>
+   </row>
+    <row>
+        <collectionKey>ucarbd</collectionKey>
+        <collectionName>UCAR Members Meeting Records</collectionName>
+   </row>
+    <row>
+        <collectionKey>unav</collectionKey>
+        <collectionName>UCAR/NCAR AV</collectionName>
+   </row>
+    <row>
+        <collectionKey>raf</collectionKey>
+        <collectionName>Research Aviation Facility</collectionName>
+   </row>
+    <row>
+        <collectionKey>wcias</collectionKey>
+        <collectionName>Weather/Climate Assessment Records</collectionName>
+   </row>
+    <row>
+        <collectionKey>guides</collectionKey>
+        <collectionName>Guides to Archival Collections</collectionName>
+   </row>
+    <row>
+        <collectionKey>reports</collectionKey>
+        <collectionName>Reports &amp; Rpt Chapters</collectionName>
+   </row>
+    <row>
+        <collectionKey>manuscript</collectionKey>
+        <collectionName>NCAR Manuscripts</collectionName>
+   </row>
+    <row>
+        <collectionKey>barbados</collectionKey>
+        <collectionName>1968 Barbados Experiment</collectionName>
+   </row>
+    <row>
+        <collectionKey>ral</collectionKey>
+        <collectionName>Research Applications Lab</collectionName>
+   </row>
+
 </lookup>
